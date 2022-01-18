@@ -1,8 +1,13 @@
-# Panini
+<p align="center">
+  <img alt="Medusa" src="./assets/icon.svg" width="100" />
+</p>
+<h1 align="center">
+  Panini 
+</h1>
 
-![](./assets/icon.svg)
-
-An simple .NET library for **INI** files parsing.
+<p align="center">
+  An simple .NET library for <b>INI</b> files parsing.
+</p>
 
 ## Usage
 
@@ -38,7 +43,7 @@ foreach (IniSection s in sections)
 
 ## How to install
 
-You can easily include the `src/Panini/Panini.csproj` to your solution. Otherwise, you can install via [NuGet](https://www.nuget.org/packages/Panini/) by running
+You can easily compile `src/Panini/Panini.csproj` and referenced DLL inside your project. Otherwise, you can install via [NuGet](https://www.nuget.org/packages/Panini/) by running
 
 ```bash
 dotnet add package Panini --version 1.0.0
