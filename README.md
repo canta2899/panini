@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="Medusa" src="./assets/icon.svg" width="100" />
+  <img alt="Medusa" src="./src/Panini/assets/icon.svg" width="100" />
 </p>
 <h1 align="center">
   Panini 
