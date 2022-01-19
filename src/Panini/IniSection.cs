@@ -11,7 +11,7 @@ namespace Panini
 
         public List<string> Comments { get; internal set; }
 
-        internal Hashtable? Params { get; }
+        internal Hashtable Params { get; }
 
         internal IniSection(string name, Hashtable parameters)
         {
@@ -25,6 +25,23 @@ namespace Panini
             Name = name;
             Params = parameters;
             Comments = comments; 
+        }
+
+        public IniSection(string name)
+        {
+            Name = name;
+            Params = new Hashtable();
+            Comments = new List<string>();
+        }
+        
+        public void Add(string key, string value)
+        {
+            Params.Add(key, value);
+        }
+
+        public void AddComment(string comment)
+        {
+            Comments.Add(comment);
         }
 
         /// <summary>

@@ -1,13 +1,17 @@
-﻿// using Panini;
+﻿using Panini;
 
-// Console.WriteLine("!!Single section!!");
+// Your ini path
 
-// ParsedIni parsedIni = IniParser.Parse("./test.ini");
+var iniPath = "./Panini.Example/test.ini";
 
-// IniSection? currentSection = parsedIni.GetSection("main1");
+ParsedIni parsedIni = IniParser.Parse(iniPath);
 
-// Console.WriteLine($"Test2: {currentSection?.Get("test2")}");
-// Console.WriteLine($"Test1: {currentSection?.Get("test1")}");
+Console.WriteLine("!!Single section!!");
+
+IniSection? currentSection = parsedIni.GetSection("main1");
+
+Console.WriteLine($"Test2: {currentSection?.Get("test2")}");
+Console.WriteLine($"Test1: {currentSection?.Get("test1")}");
 
 // Console.WriteLine("\n\n!!Multiple sections!!");
 
@@ -18,3 +22,20 @@
 //     Console.WriteLine($"Param1: {s.Get("test1")}");
 //     Console.WriteLine($"Param2: {s.Get("test2")}");
 // }
+
+
+// Now writing a new ini file...
+
+IniSection newSection = new IniSection("User");
+
+newSection.Add("name", "John");
+newSection.Add("surname", "Kings");
+
+List<IniSection> sections = new List<IniSection>();
+
+sections.Add(newSection);
+
+ParsedIni pi = new ParsedIni(sections);
+
+IniParser.Write(pi, "./mynewini.ini");
+

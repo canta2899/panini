@@ -1,3 +1,4 @@
+using System.Text;
 using System.Collections;
 
 namespace Panini 
@@ -13,6 +14,48 @@ namespace Panini
         private static IniSection GetIniSection(string root, Hashtable pars, List<string> comments)
         {
             return new IniSection(root, pars, comments);
+        }
+
+        public static void Write(ParsedIni file, string filePath)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            List<IniSection> sections = file.GetAllSections();
+
+            foreach (IniSection s in sections)
+            {
+                WriteSection(s, ref sb);
+            }
+
+            WriteToFile(ref sb, filePath);
+        }
+
+        private static void WriteToFile(ref StringBuilder sb, string filePath)
+        {
+            using StreamWriter sw = new StreamWriter(filePath);
+
+            sw.Write(sb.ToString());
+        }
+
+        private static void WriteSection(IniSection s, ref StringBuilder sb)
+        {
+            sb.AppendLine($"[{s.Name}]");
+
+            foreach (string comment in s.Comments)
+            {
+                sb.AppendLine($"{comment}");
+            }
+
+            if (s.Params != null)
+            {
+                foreach (DictionaryEntry pair in s.Params)
+                {
+                    sb.AppendLine($"{pair.Key} = {pair.Value}");
+                }
+            }
+
+
+            sb.AppendLine();
         }
 
         /// <summary>

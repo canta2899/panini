@@ -7,6 +7,14 @@ namespace Panini
         internal ParsedIni(ILookup<string, IniSection> lookup)
         {
             this.lookup = lookup;
+        }
+
+        public ParsedIni(List<IniSection> sections)
+        {
+            this.lookup = sections.ToLookup(
+                iniSection => iniSection.Name, 
+                iniSection => iniSection
+            );
         } 
 
         /// <summary>
@@ -19,6 +27,11 @@ namespace Panini
             return lookup.Where(x => x.Key == name)
                          .SelectMany(x => x)
                          .ToList();
+        }
+
+        public List<IniSection> GetAllSections()
+        {
+            return this.lookup.SelectMany(x => x).ToList();
         }
 
         /// <summary>
