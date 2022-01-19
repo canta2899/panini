@@ -4,17 +4,27 @@ namespace Panini
     {
         private ILookup<string, IniSection> lookup;
         private List<IniSection> sectionList;
+        public string Path { get; set; }
 
-        public ParsedIni(List<IniSection> sectionList)
+        public ParsedIni(List<IniSection> sectionList, string path)
         {
+            // Builds an INI from a list of sections
             this.sectionList = sectionList;
             this.lookup = UpdateLookup();
+            Path = path;
         }
-
-        public ParsedIni()
+        
+        public ParsedIni(string path)
         {
+            // Builds an empty ini
             this.sectionList = new List<IniSection>();
             this.lookup = UpdateLookup();
+            Path = path;
+        }
+
+        private static void CheckPathExists(string path)
+        {
+            if (!File.Exists(path)) throw new FileNotFoundException();
         }
 
         private ILookup<string, IniSection> UpdateLookup()
@@ -25,18 +35,17 @@ namespace Panini
             );
         }
 
+        // Adds a new section to the ini file
         public ParsedIni AddSection(IniSection s)
         {
             sectionList.Add(s);
             this.lookup = UpdateLookup();
+
+            // chainable method
             return this;
         }
 
-        /// <summary>
-        /// Returns all the Sections for a specific identifier
-        /// </summary>
-        /// <param name="name">Section name</param>
-        /// <returns>List of Sections</returns>
+        // Returns all the Sections for a specific identifier
         public List<IniSection> GetSections(string name)
         {
             return lookup.Where(x => x.Key == name)
@@ -44,6 +53,7 @@ namespace Panini
                             .ToList();
         }
 
+        // Returns all the sections of the parsed file
         public List<IniSection> GetAllSections()
         {
             return this.lookup.SelectMany(x => x).ToList();
@@ -59,6 +69,11 @@ namespace Panini
             if (!lookup.Contains(name))
                 return null;
             return lookup[name].First();
+        }
+
+        public void Save()
+        {
+            IniParser.Write(this);
         }
     }
 }

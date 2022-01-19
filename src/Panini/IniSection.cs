@@ -4,14 +4,14 @@ namespace Panini
 {
     public class IniSection
     {
-        /// <summary>
-        /// Represents the name of the section
-        /// </summary>
+        // Represents the name of the section
         public string Name { get; internal set; }
 
+        // Collection of comments inside the section
         public List<string> Comments { get; internal set; }
 
-        internal Hashtable Params { get; }
+        // Hashtable of the key-value pair of the section
+        public Hashtable Params { get; }
 
         internal IniSection(string name, Hashtable parameters)
         {
@@ -34,27 +34,27 @@ namespace Panini
             Comments = new List<string>();
         }
         
+
+        // Adds a new key, value pair to the section
         public IniSection Add(string key, string value)
         {
             Params.Add(key, value);
             return this;
         }
 
+        // Adds a new comment to the section
         public IniSection AddComment(string comment)
         {
-            Comments.Add(comment);
+            string tmp = comment.StartsWith("#") ? comment : "# " + comment;
+            Comments.Add(tmp);
             return this;
         }
 
-        /// <summary>
-        /// Obtains the value corrisponding to the given key from the current section
-        /// </summary>
-        /// <param name="key">Name of the parameter</param>
-        /// <returns>The corresponding value, as a string</returns>
+        // Returns the value corresponding to the given key or null
         public string? Get(string key) => Params switch
         {
             null => "",
-            _ => Params.ContainsKey(key) ? (string?)Params[key] : ""
+            _ => Params.ContainsKey(key) ? (string?)Params[key] : null
         };        
     }
 }

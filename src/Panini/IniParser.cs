@@ -6,17 +6,16 @@ namespace Panini
     public static class IniParser
     {
 
-        private static void CheckPathExists(string path)
+        // Check if the ini file exists, otherwise throws an exception
+
+        // Builds a section from a name, parameters and comments
+        private static IniSection GetIniSection(string name, Hashtable pars, List<string> comments)
         {
-            if (!File.Exists(path)) throw new FileNotFoundException();
+            return new IniSection(name, pars, comments);
         }
 
-        private static IniSection GetIniSection(string root, Hashtable pars, List<string> comments)
-        {
-            return new IniSection(root, pars, comments);
-        }
-
-        public static void Write(ParsedIni file, string filePath)
+        // Writes the ini file to the given path
+        public static void Write(ParsedIni file)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -27,9 +26,10 @@ namespace Panini
                 WriteSection(s, ref sb);
             }
 
-            WriteToFile(ref sb, filePath);
+            WriteToFile(ref sb, file.Path);
         }
 
+        // Performs the writing operation using a stream writer
         private static void WriteToFile(ref StringBuilder sb, string filePath)
         {
             using StreamWriter sw = new StreamWriter(filePath);
@@ -37,6 +37,7 @@ namespace Panini
             sw.Write(sb.ToString());
         }
 
+        // Builds a string with the corresponding section data
         private static void WriteSection(IniSection s, ref StringBuilder sb)
         {
             sb.AppendLine($"[{s.Name}]");
@@ -58,14 +59,9 @@ namespace Panini
             sb.AppendLine();
         }
 
-        /// <summary>
-        /// Parses the Ini file at the given path
-        /// </summary>
-        /// <param name="path">Path to the ini file</param>
-        /// <returns>A ParsedIni object</returns>
+        // Parses the Ini file at the given path
        public static ParsedIni Parse(string path)
        {
-            CheckPathExists(path);
 
             // For each Ini Section
             List<IniSection> parsedContent = new List<IniSection>();
@@ -75,15 +71,16 @@ namespace Panini
 
             ParseFile(ref parsedContent, fileIni);
 
-            return new ParsedIni(parsedContent);
+            return new ParsedIni(parsedContent, path);
         }
 
+        // Performs the line by line parsing
         private static void ParseFile(ref List<IniSection> parsedContent, StreamReader fileIni)
         {
 
             // Params without sections are under ROOT sections
             string? strLine = null;
-            string currentRoot = "ROOT";
+            string currentRoot = "Root";
             string[] keyPair;
             List<string> comments = new List<string>();
             Hashtable h = new Hashtable();
