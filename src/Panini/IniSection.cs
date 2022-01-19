@@ -34,14 +34,16 @@ namespace Panini
             Comments = new List<string>();
         }
         
-        public void Add(string key, string value)
+        public IniSection Add(string key, string value)
         {
             Params.Add(key, value);
+            return this;
         }
 
-        public void AddComment(string comment)
+        public IniSection AddComment(string comment)
         {
             Comments.Add(comment);
+            return this;
         }
 
         /// <summary>

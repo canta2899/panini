@@ -75,13 +75,7 @@ namespace Panini
 
             ParseFile(ref parsedContent, fileIni);
 
-            // Creates a look up over the section name
-            ILookup<string, IniSection> result = parsedContent.ToLookup(
-                iniSection => iniSection.Name, 
-                iniSection => iniSection
-            );
-
-            return new ParsedIni(result);
+            return new ParsedIni(parsedContent);
         }
 
         private static void ParseFile(ref List<IniSection> parsedContent, StreamReader fileIni)

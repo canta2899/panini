@@ -3,19 +3,34 @@ namespace Panini
     public class ParsedIni
     {
         private ILookup<string, IniSection> lookup;
-    
-        internal ParsedIni(ILookup<string, IniSection> lookup)
+        private List<IniSection> sectionList;
+
+        public ParsedIni(List<IniSection> sectionList)
         {
-            this.lookup = lookup;
+            this.sectionList = sectionList;
+            this.lookup = UpdateLookup();
         }
 
-        public ParsedIni(List<IniSection> sections)
+        public ParsedIni()
         {
-            this.lookup = sections.ToLookup(
-                iniSection => iniSection.Name, 
+            this.sectionList = new List<IniSection>();
+            this.lookup = UpdateLookup();
+        }
+
+        private ILookup<string, IniSection> UpdateLookup()
+        {
+            return sectionList.ToLookup(
+                iniSection => iniSection.Name,
                 iniSection => iniSection
             );
-        } 
+        }
+
+        public ParsedIni AddSection(IniSection s)
+        {
+            sectionList.Add(s);
+            this.lookup = UpdateLookup();
+            return this;
+        }
 
         /// <summary>
         /// Returns all the Sections for a specific identifier
@@ -25,8 +40,8 @@ namespace Panini
         public List<IniSection> GetSections(string name)
         {
             return lookup.Where(x => x.Key == name)
-                         .SelectMany(x => x)
-                         .ToList();
+                            .SelectMany(x => x)
+                            .ToList();
         }
 
         public List<IniSection> GetAllSections()
