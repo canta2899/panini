@@ -2,19 +2,21 @@
 <package>
   <metadata>
     <id>Panini</id>
-    <version>1.0.5</version>
+    <version>1.0.7</version>
     <title>Panini</title>
     <authors>canta2899</authors>
     <description>A simple library for INI file parsing</description>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
     <icon>assets/icon.png</icon>
+    <readme>docs/README.md</readme>
     <dependencies>
       <group targetFramework="net6.0" />
     </dependencies>
   </metadata>
   <files>
     <file src="./assets/icon.png" target="assets/" />
-    <file src="./bin/Release/net6.0/ref/Panini.dll" target="lib/net6.0" />
+    <file src="./../../README.md" target="docs/" />
+    <file src="./bin/Release/net6.0/Panini.dll" target="lib/net6.0" />
   </files>
 </package>
