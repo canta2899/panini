@@ -1,30 +1,27 @@
+using Panini.Parser;
+
 namespace Panini
 {
-    public class ParsedIni
+    public class IniFile
     {
         private ILookup<string, IniSection> lookup;
         private List<IniSection> sectionList;
         public string Path { get; set; }
 
-        public ParsedIni(List<IniSection> sectionList, string path)
+        public IniFile(List<IniSection> sectionList, string path)
         {
             // Builds an INI from a list of sections
+            Path = path;
             this.sectionList = sectionList;
             this.lookup = UpdateLookup();
-            Path = path;
-        }
-        
-        public ParsedIni(string path)
-        {
-            // Builds an empty ini
-            this.sectionList = new List<IniSection>();
-            this.lookup = UpdateLookup();
-            Path = path;
         }
 
-        private static void CheckPathExists(string path)
+        public IniFile(string path)
         {
-            if (!File.Exists(path)) throw new FileNotFoundException();
+            // Builds an empty ini
+            Path = path;
+            this.sectionList = GetSectionsFromFile();
+            this.lookup = UpdateLookup();
         }
 
         private ILookup<string, IniSection> UpdateLookup()
@@ -35,8 +32,34 @@ namespace Panini
             );
         }
 
+        private List<IniSection> GetSectionsFromFile()
+        {
+            List<IniSection> parsed;
+
+            if (IniParser.CheckPathExists(Path))
+            {
+                parsed = IniParser.Parse(Path);
+            }
+            else
+            {
+                parsed = new List<IniSection>();
+            }
+
+            return parsed;
+        }
+
+        public bool Parse()
+        {
+            if (!IniParser.CheckPathExists(Path)) return false;
+
+            IniParser.Parse(Path).ForEach(x => sectionList.Add(x));
+            return true;
+        }
+
+        public void Clear() => sectionList.Clear();
+
         // Adds a new section to the ini file
-        public ParsedIni AddSection(IniSection s)
+        public IniFile AddSection(IniSection s)
         {
             sectionList.Add(s);
             this.lookup = UpdateLookup();

@@ -5,10 +5,10 @@
 var iniPath = "/Users/andrea/development/projects/panini/src/Panini.Example/test.ini";
 
 // Parses the file
-ParsedIni parsedIni = IniParser.Parse(iniPath);
+IniFile parsedIni = new IniFile(iniPath);
 
 // Extracts the section with the given name
-IniSection? currentSection = parsedIni.GetSection("General");
+IniSection? currentSection = parsedIni.GetSection("General")?.Add("AnotherKey", "AnotherValue");
 
 // Extracts a key from the section
 Console.WriteLine($"WhoAmI: {currentSection?.Get("WhoAmI")}");

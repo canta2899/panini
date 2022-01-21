@@ -1,9 +1,9 @@
 using System.Text;
 using System.Collections;
 
-namespace Panini 
+namespace Panini.Parser
 {
-    public static class IniParser
+    internal static class IniParser
     {
 
         // Check if the ini file exists, otherwise throws an exception
@@ -15,7 +15,7 @@ namespace Panini
         }
 
         // Writes the ini file to the given path
-        public static void Write(ParsedIni file)
+        internal static void Write(IniFile file)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -60,8 +60,8 @@ namespace Panini
         }
 
         // Parses the Ini file at the given path
-       public static ParsedIni Parse(string path)
-       {
+        internal static List<IniSection> Parse(string path)
+        {
 
             // For each Ini Section
             List<IniSection> parsedContent = new List<IniSection>();
@@ -71,7 +71,12 @@ namespace Panini
 
             ParseFile(ref parsedContent, fileIni);
 
-            return new ParsedIni(parsedContent, path);
+            return parsedContent;
+        }
+
+        internal static bool CheckPathExists(string path)
+        {
+            return File.Exists(path);
         }
 
         // Performs the line by line parsing

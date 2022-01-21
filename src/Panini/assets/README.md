@@ -5,7 +5,6 @@ A simple .NET library for **INI** files parsing.
 ## Usage
 
 ```cs
-
 using Panini;
 
 // Your ini path
@@ -13,10 +12,10 @@ using Panini;
 var iniPath = "./test.ini";
 
 // Parses the file
-ParsedIni parsedIni = IniParser.Parse(iniPath);
+IniFile parsedIni = new IniFile(iniPath);
 
-// Extracts the section with the given name
-IniSection? currentSection = parsedIni.GetSection("General");
+// Extracts the section with the given name and add a new key
+IniSection? currentSection = parsedIni.GetSection("General")?.Add("AnotherKey", "AnotherValue");
 
 // Extracts a key from the section
 Console.WriteLine($"WhoAmI: {currentSection?.Get("WhoAmI")}");
@@ -32,8 +31,13 @@ sections.ForEach(s => Console.WriteLine($"Username is : {s.Get("Name")}"));
 // 1. Create a new section
 IniSection newSection = new IniSection("User");
 
+Console.Write("New user name: ");
+string newName = Console.ReadLine() ?? "";
+Console.Write("New user surname: ");
+string newSurname = Console.ReadLine() ?? "";
+
 // 2. Add the entries to the section
-newSection.Add("Name", "John").Add("Surname", "King");
+newSection.Add("Name", newName).Add("Surname", newSurname);
 
 // 3. Add the section to the ini file
 parsedIni.AddSection(newSection);
@@ -43,10 +47,3 @@ parsedIni.Save();
 
 ```
 
-## How to install
-
-You can easily compile `src/Panini/Panini.csproj` and referenced DLL inside your project. Otherwise, you can install via [NuGet](https://www.nuget.org/packages/Panini/) by running
-
-```bash
-dotnet add package Panini --version 1.0.7
-```
