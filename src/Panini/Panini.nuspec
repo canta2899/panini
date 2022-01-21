@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Panini</id>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <title>Panini</title>
     <authors>canta2899</authors>
     <description>A simple library for INI file parsing</description>
