@@ -1,4 +1,7 @@
 using Panini.Parser;
+using System.Linq;
+using System.IO;
+using System.Collections.Generic;
 
 namespace Panini
 {
@@ -34,25 +37,16 @@ namespace Panini
 
         private List<IniSection> GetSectionsFromFile()
         {
-            List<IniSection> parsed;
-
-            if (IniParser.CheckPathExists(Path))
-            {
-                parsed = IniParser.Parse(Path);
-            }
-            else
-            {
-                parsed = new List<IniSection>();
-            }
-
-            return parsed;
+            return File.Exists(Path) ? IniParser.Parse(Path)
+                                    : new List<IniSection>();
         }
 
-        public bool Parse()
+        public bool Parse(string? path = null)
         {
-            if (!IniParser.CheckPathExists(Path)) return false;
+            string finalPath = (path == null) ? Path : path;
+            if (!File.Exists(finalPath)) return false;
 
-            IniParser.Parse(Path).ForEach(x => sectionList.Add(x));
+            IniParser.Parse(finalPath).ForEach(x => sectionList.Add(x));
             return true;
         }
 
@@ -61,12 +55,39 @@ namespace Panini
         // Adds a new section to the ini file
         public IniFile AddSection(IniSection s)
         {
-            sectionList.Add(s);
+            this.sectionList.Add(s);
             this.lookup = UpdateLookup();
 
             // chainable method
             return this;
         }
+
+        public IniSection AddSection(string sectionName)
+        {
+
+            IniSection newSection = new IniSection(sectionName);
+            this.sectionList.Add(newSection);
+            this.lookup = UpdateLookup();
+
+            return newSection;
+        }
+
+        public IniFile RemoveSection(IniSection section)
+        {
+            this.sectionList.Remove(section);
+            this.lookup = UpdateLookup();
+
+            return this;
+        }
+
+        public IniFile RemoveSection(string sectionName)
+        {
+            List<IniSection> sections = this.sectionList.Where(x => x.Name == sectionName).ToList();
+            this.sectionList = this.sectionList.Except(sections).ToList();
+
+            return this;
+        }
+
 
         // Returns all the Sections for a specific identifier
         public List<IniSection> GetSections(string name)
@@ -82,21 +103,20 @@ namespace Panini
             return this.lookup.SelectMany(x => x).ToList();
         }
 
-        /// <summary>
-        /// Returns the first occurence of a section for the given identifier
-        /// </summary>
-        /// <param name="name">Section name</param>
-        /// <returns>Section object, null if not found </returns>
         public IniSection? GetSection(string name)
         {
-            if (!lookup.Contains(name))
-                return null;
+            if (!lookup.Contains(name)) return null;
             return lookup[name].First();
         }
 
         public void Save()
         {
             IniParser.Write(this);
+        }
+
+        public void Save(string path)
+        {
+            IniParser.Write(this, path: path);
         }
     }
 }

@@ -1,11 +1,13 @@
 using System.Text;
+using System.IO;
 using System.Collections;
+using System.Collections.Generic;
+using System;
 
 namespace Panini.Parser
 {
     internal static class IniParser
     {
-
         // Check if the ini file exists, otherwise throws an exception
 
         // Builds a section from a name, parameters and comments
@@ -15,25 +17,19 @@ namespace Panini.Parser
         }
 
         // Writes the ini file to the given path
-        internal static void Write(IniFile file)
+        internal static void Write(IniFile file, string? path = null)
         {
             StringBuilder sb = new StringBuilder();
 
-            List<IniSection> sections = file.GetAllSections();
+            file.GetAllSections().ForEach(x => WriteSection(x, ref sb));
 
-            foreach (IniSection s in sections)
-            {
-                WriteSection(s, ref sb);
-            }
-
-            WriteToFile(ref sb, file.Path);
+            WriteToFile(ref sb, (path != null) ? path : file.Path);
         }
 
         // Performs the writing operation using a stream writer
         private static void WriteToFile(ref StringBuilder sb, string filePath)
         {
             using StreamWriter sw = new StreamWriter(filePath);
-
             sw.Write(sb.ToString());
         }
 
@@ -55,7 +51,6 @@ namespace Panini.Parser
                 }
             }
 
-
             sb.AppendLine();
         }
 
@@ -74,15 +69,10 @@ namespace Panini.Parser
             return parsedContent;
         }
 
-        internal static bool CheckPathExists(string path)
-        {
-            return File.Exists(path);
-        }
 
         // Performs the line by line parsing
         private static void ParseFile(ref List<IniSection> parsedContent, StreamReader fileIni)
         {
-
             // Params without sections are under ROOT sections
             string? strLine = null;
             string currentRoot = "Root";

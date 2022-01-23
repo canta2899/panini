@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package>
-  <metadata>
-    <id>Panini</id>
-    <version>1.1.1</version>
-    <title>Panini</title>
-    <authors>canta2899</authors>
-    <description>A simple library for INI file parsing</description>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <license type="expression">MIT</license>
-    <icon>assets/icon.png</icon>
-    <readme>docs/README.md</readme>
-    <dependencies>
-      <group targetFramework="net6.0" />
-    </dependencies>
-  </metadata>
-  <files>
-    <file src="./assets/icon.png" target="assets/" />
-    <file src="./assets/README.md" target="docs/" />
-    <file src="./bin/Release/net6.0/Panini.dll" target="lib/net6.0" />
-  </files>
+    <metadata>
+        <id>Panini</id>
+        <version>1.2.0</version>
+        <title>Panini</title>
+        <authors>canta2899</authors>
+        <description>A simple library for INI file parsing</description>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <license type="expression">MIT</license>
+        <icon>assets/icon.png</icon>
+        <readme>docs/README.md</readme>
+        <dependencies>
+            <group targetFramework="net6.0" />
+            <group targetFramework="net5.0" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="./assets/icon.png" target="assets/" />
+        <file src="./assets/README.md" target="docs/" />
+        <file src="./bin/Release/net6.0/Panini.dll" target="lib/net6.0" />
+        <file src="./bin/Release/net5.0/Panini.dll" target="lib/net5.0" />
+    </files>
 </package>

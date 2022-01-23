@@ -1,17 +1,20 @@
-﻿using Panini;
+﻿using System;
+using System.Collections.Generic;
+using Panini;
 
-// Your ini path
+// Your ini file path
+var iniPath = "./test.ini";
 
-var iniPath = "/Users/andrea/development/projects/panini/src/Panini.Example/test.ini";
+// If a file at the given path exists, Panini will parse it.
+// Otherwise, an empty INI structure will be built
 
-// Parses the file
 IniFile parsedIni = new IniFile(iniPath);
 
-// Extracts the section with the given name
-IniSection? currentSection = parsedIni.GetSection("General")?.Add("AnotherKey", "AnotherValue");
+// Extract a section and add a new value
+parsedIni.GetSection("General")?.Add("AnotherKey", "AnotherValue");
 
 // Extracts a key from the section
-Console.WriteLine($"WhoAmI: {currentSection?.Get("WhoAmI")}");
+string? value = parsedIni.GetSection("General")?.Get("AnotherKey");
 
 // Extracts all the sections for the given name
 List<IniSection> sections = parsedIni.GetSections("User");
@@ -19,22 +22,10 @@ List<IniSection> sections = parsedIni.GetSections("User");
 // Iterates through all the sections
 sections.ForEach(s => Console.WriteLine($"Username is : {s.Get("Name")}"));
 
-// Let's add a new user
-
-// 1. Create a new section
-IniSection newSection = new IniSection("User");
-
-Console.Write("New user name: ");
-string newName = Console.ReadLine() ?? "";
-Console.Write("New user surname: ");
-string newSurname = Console.ReadLine() ?? "";
-
-// 2. Add the entries to the section
-newSection.Add("Name", newName).Add("Surname", newSurname);
-
-// 3. Add the section to the ini file
-parsedIni.AddSection(newSection);
+// Adds a new section (in this case, a new user entry)
+parsedIni.AddSection("User").TryAdd("Name", "Paul")?.TryAdd("Surname", "Jacob");
 
 // Write the changes
 parsedIni.Save();
 
+// Now the ini file should be updated or created at the given path

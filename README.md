@@ -11,21 +11,26 @@
 
 ## Usage
 
+Here's an example on how to use **Panini** in order to create, parse and update your INIs. The main focus is on **chainable methods** and being able to build **multiple sections with the same name**.
+
 ```cs
+using System;
+using System.Collections.Generic;
 using Panini;
 
-// Your ini path
-
+// Your ini file path
 var iniPath = "./test.ini";
 
-// Parses the file
+// If a file at the given path exists, Panini will parse it.
+// Otherwise, an empty INI structure will be built
+
 IniFile parsedIni = new IniFile(iniPath);
 
-// Extracts the section with the given name and add a new key
-IniSection? currentSection = parsedIni.GetSection("General")?.Add("AnotherKey", "AnotherValue");
+// Extract a section and add a new value
+parsedIni.GetSection("General")?.Add("AnotherKey", "AnotherValue");
 
 // Extracts a key from the section
-Console.WriteLine($"WhoAmI: {currentSection?.Get("WhoAmI")}");
+string? value = parsedIni.GetSection("General")?.Get("AnotherKey");
 
 // Extracts all the sections for the given name
 List<IniSection> sections = parsedIni.GetSections("User");
@@ -33,31 +38,19 @@ List<IniSection> sections = parsedIni.GetSections("User");
 // Iterates through all the sections
 sections.ForEach(s => Console.WriteLine($"Username is : {s.Get("Name")}"));
 
-// Let's add a new user
-
-// 1. Create a new section
-IniSection newSection = new IniSection("User");
-
-Console.Write("New user name: ");
-string newName = Console.ReadLine() ?? "";
-Console.Write("New user surname: ");
-string newSurname = Console.ReadLine() ?? "";
-
-// 2. Add the entries to the section
-newSection.Add("Name", newName).Add("Surname", newSurname);
-
-// 3. Add the section to the ini file
-parsedIni.AddSection(newSection);
+// Adds a new section (in this case, a new user entry)
+parsedIni.AddSection("User").TryAdd("Name", "Paul")?.TryAdd("Surname", "Jacob");
 
 // Write the changes
 parsedIni.Save();
 
+// Now the ini file should be updated or created at the given path
 ```
 
 ## How to install
 
-You can easily compile `src/Panini/Panini.csproj` and referenced DLL inside your project. Otherwise, you can install via [NuGet](https://www.nuget.org/packages/Panini/) by running
+Panini is made of three files, so you can easily compile `src/Panini/Panini.csproj` and referenced the DLL inside your project or copy the files at `src/Panini/` inside your project. Otherwise you can install via [NuGet](https://www.nuget.org/packages/Panini/) by running
 
 ```bash
-dotnet add package Panini --version 1.0.7
+dotnet add package Panini --version 1.2.0
 ```

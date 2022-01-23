@@ -1,6 +1,7 @@
 using System.Collections;
+using System.Collections.Generic;
 
-namespace Panini 
+namespace Panini
 {
     public class IniSection
     {
@@ -24,7 +25,7 @@ namespace Panini
         {
             Name = name;
             Params = parameters;
-            Comments = comments; 
+            Comments = comments;
         }
 
         public IniSection(string name)
@@ -33,12 +34,47 @@ namespace Panini
             Params = new Hashtable();
             Comments = new List<string>();
         }
-        
+
 
         // Adds a new key, value pair to the section
+        public IniSection? TryAdd(string key, string value)
+        {
+            if (!Params.ContainsKey(key))
+            {
+                Params.Add(key, value);
+                return this;
+            }
+
+            return null;
+        }
+
         public IniSection Add(string key, string value)
         {
             Params.Add(key, value);
+            return this;
+        }
+
+        public IniSection Set(string key, string value)
+        {
+            if (!Params.ContainsKey(key))
+            {
+                this.Add(key, value);
+            }
+            else
+            {
+                this.Params[key] = value;
+            }
+
+            return this;
+        }
+
+        public IniSection Remove(string key)
+        {
+            if (Params.ContainsKey(key))
+            {
+                Params.Remove(key);
+            }
+
             return this;
         }
 
@@ -53,8 +89,8 @@ namespace Panini
         // Returns the value corresponding to the given key or null
         public string? Get(string key) => Params switch
         {
-            null => "",
+            null => null,
             _ => Params.ContainsKey(key) ? (string?)Params[key] : null
-        };        
+        };
     }
 }

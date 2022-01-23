@@ -3,3 +3,4 @@ release/
 .vscode
 bin/
 obj/
+src/Panini.Testing/bin/Debug/net*/test.ini
