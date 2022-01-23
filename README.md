@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="Panini" src="./src/Panini/assets/icon.png" width="100" />
+  <img alt="Panini" src="./src/Panini/assets/panini.svg" width="200" />
 </p>
 <h1 align="center">
   Panini 
@@ -11,7 +11,7 @@
 
 ## Usage
 
-Here's an example on how to use **Panini** in order to create, parse and update your INIs. The main focus is on **chainable methods** and being able to build **multiple sections with the same name**.
+Here's an example on how to use **Panini** in order to create, parse and update your INIs. The main focus is on **chainable methods** and being able to build **multiple sections with the same name** (which is the main reason why i built this library).
 
 ```cs
 using System;
