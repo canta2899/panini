@@ -1,3 +1,5 @@
+[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
+
 <p align="center">
   <img alt="Panini" src="./src/Panini/assets/panini.svg" width="200" />
 </p>
