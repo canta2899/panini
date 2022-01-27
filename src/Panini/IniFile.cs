@@ -2,28 +2,25 @@ using Panini.Parser;
 using System.Linq;
 using System.IO;
 using System.Collections.Generic;
-
 namespace Panini
+
 {
     public class IniFile
     {
         private ILookup<string, IniSection> lookup;
         private List<IniSection> sectionList;
-        public string Path { get; set; }
 
-        public IniFile(List<IniSection> sectionList, string path)
+        public IniFile(List<IniSection> sectionList)
         {
             // Builds an INI from a list of sections
-            Path = path;
             this.sectionList = sectionList;
             this.lookup = UpdateLookup();
         }
 
-        public IniFile(string path)
+        public IniFile()
         {
             // Builds an empty ini
-            Path = path;
-            this.sectionList = GetSectionsFromFile();
+            this.sectionList = new List<IniSection>();
             this.lookup = UpdateLookup();
         }
 
@@ -35,18 +32,18 @@ namespace Panini
             );
         }
 
-        private List<IniSection> GetSectionsFromFile()
+        private List<IniSection> GetSectionsFromFile(string path)
         {
-            return File.Exists(Path) ? IniParser.Parse(Path)
+            return File.Exists(path) ? IniParser.Parse(path)
                                     : new List<IniSection>();
         }
 
-        public bool Parse(string? path = null)
+        public bool Parse(string path)
         {
-            string finalPath = (path == null) ? Path : path;
-            if (!File.Exists(finalPath)) return false;
+            if (!File.Exists(path)) return false;
 
-            IniParser.Parse(finalPath).ForEach(x => sectionList.Add(x));
+            IniParser.Parse(path).ForEach(x => sectionList.Add(x));
+            this.lookup = UpdateLookup();
             return true;
         }
 
@@ -80,7 +77,7 @@ namespace Panini
             return this;
         }
 
-        public IniFile RemoveSection(string sectionName)
+        public IniFile RemoveSectionByName(string sectionName)
         {
             List<IniSection> sections = this.sectionList.Where(x => x.Name == sectionName).ToList();
             this.sectionList = this.sectionList.Except(sections).ToList();
@@ -90,7 +87,7 @@ namespace Panini
 
 
         // Returns all the Sections for a specific identifier
-        public List<IniSection> GetSections(string name)
+        public List<IniSection> GetSectionsByName(string name)
         {
             return lookup.Where(x => x.Key == name)
                             .SelectMany(x => x)
@@ -100,18 +97,13 @@ namespace Panini
         // Returns all the sections of the parsed file
         public List<IniSection> GetAllSections()
         {
-            return this.lookup.SelectMany(x => x).ToList();
+            return this.sectionList;
         }
 
-        public IniSection? GetSection(string name)
+        public IniSection? GetSectionByName(string name)
         {
             if (!lookup.Contains(name)) return null;
             return lookup[name].First();
-        }
-
-        public void Save()
-        {
-            IniParser.Write(this);
         }
 
         public void Save(string path)

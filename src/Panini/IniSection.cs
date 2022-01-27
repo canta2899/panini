@@ -48,7 +48,7 @@ namespace Panini
             return null;
         }
 
-        public IniSection Add(string key, string value)
+        private IniSection Add(string key, string value)
         {
             Params.Add(key, value);
             return this;
@@ -68,7 +68,7 @@ namespace Panini
             return this;
         }
 
-        public IniSection Remove(string key)
+        public IniSection TryRemove(string key)
         {
             if (Params.ContainsKey(key))
             {
@@ -87,7 +87,7 @@ namespace Panini
         }
 
         // Returns the value corresponding to the given key or null
-        public string? Get(string key) => Params switch
+        public string? TryGet(string key) => Params switch
         {
             null => null,
             _ => Params.ContainsKey(key) ? (string?)Params[key] : null

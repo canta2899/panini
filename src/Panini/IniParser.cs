@@ -17,20 +17,20 @@ namespace Panini.Parser
         }
 
         // Writes the ini file to the given path
-        internal static void Write(IniFile file, string? path = null)
+        internal static void Write(IniFile file, string path)
         {
             StringBuilder sb = new StringBuilder();
 
             file.GetAllSections().ForEach(x => WriteSection(x, ref sb));
 
-            WriteToFile(ref sb, (path != null) ? path : file.Path);
+            WriteToFile(ref sb, path);
         }
 
         // Performs the writing operation using a stream writer
         private static void WriteToFile(ref StringBuilder sb, string filePath)
         {
             using StreamWriter sw = new StreamWriter(filePath);
-            sw.Write(sb.ToString());
+            sw.Write(sb.ToString(), filePath);
         }
 
         // Builds a string with the corresponding section data

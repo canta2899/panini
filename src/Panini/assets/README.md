@@ -9,31 +9,28 @@ using System;
 using System.Collections.Generic;
 using Panini;
 
-// Your ini file path
-var iniPath = "./test.ini";
+// Build an IniFile istance and parse one or more files
 
-// If a file at the given path exists, Panini will parse it.
-// Otherwise, an empty INI structure will be built
+IniFile parsedIni = new IniFile();
+parsedIni.Parse("./test.ini");
 
-IniFile parsedIni = new IniFile(iniPath);
+// Extract a section and try add a new value
+parsedIni.GetSectionByName("General")?.TryAdd("AnotherKey", "AnotherValue");
 
-// Extract a section and add a new value
-parsedIni.GetSection("General")?.Add("AnotherKey", "AnotherValue");
-
-// Extracts a key from the section
-string? value = parsedIni.GetSection("General")?.Get("AnotherKey");
+// Now let's try to extract a key from a section
+string? value = parsedIni.GetSectionByName("General")?.TryGet("AnotherKey");
 
 // Extracts all the sections for the given name
-List<IniSection> sections = parsedIni.GetSections("User");
+List<IniSection> sections = parsedIni.GetSectionsByName("User");
 
 // Iterates through all the sections
-sections.ForEach(s => Console.WriteLine($"Username is : {s.Get("Name")}"));
+sections.ForEach(s => Console.WriteLine($"Username is : {s.TryGet("Name")}"));
 
 // Adds a new section (in this case, a new user entry)
 parsedIni.AddSection("User").TryAdd("Name", "Paul")?.TryAdd("Surname", "Jacob");
 
 // Write the changes
-parsedIni.Save();
+parsedIni.Save("./newini.ini");
 
 // Now the ini file should be updated or created at the given path
 ```
