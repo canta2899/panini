@@ -1,7 +1,7 @@
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
 
 <p align="center">
-  <img alt="Panini" src="./src/Panini/assets/panini.svg" width="200" />
+  <img alt="Panini" src="./Panini/assets/panini.svg" width="200" />
 </p>
 <h1 align="center">
   Panini 
@@ -48,7 +48,7 @@ parsedIni.Save("./newini.ini");
 
 ## How to install
 
-Panini is made of three files, so you can easily compile `src/Panini/Panini.csproj` and referenced the DLL inside your project or copy the files at `src/Panini/` inside your project. Otherwise you can install via [NuGet](https://www.nuget.org/packages/Panini/) by running
+Panini is made of three files, so you can easily compile `/Panini/Panini.csproj` and referenced the DLL inside your project or copy the files at `/Panini/` inside your project. Otherwise you can install via [NuGet](https://www.nuget.org/packages/Panini/) by running
 
 ```bash
 dotnet add package Panini --version 1.3.0
