@@ -51,7 +51,7 @@ parsedIni.Save("./newini.ini");
 Panini is made of three files, so you can easily compile `/Panini/Panini.csproj` and referenced the DLL inside your project or copy the files at `/Panini/` inside your project. Otherwise you can install via [NuGet](https://www.nuget.org/packages/Panini/) by running
 
 ```bash
-dotnet add package Panini --version 1.3.0
+dotnet add package Panini --version 1.3.1
 ```
 
 ## API

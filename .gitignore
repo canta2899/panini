@@ -4,4 +4,5 @@ release/
 .vs
 bin/
 obj/
+*.nupkg
 src/Panini.Testing/bin/Debug/net*/test.ini
