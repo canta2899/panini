@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <ImplicitUsings>disable</ImplicitUsings>
+    <NuspecFile>.\Panini.nuspec</NuspecFile>
   </PropertyGroup>
 
 </Project>
