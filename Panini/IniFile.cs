@@ -107,7 +107,7 @@ namespace Panini
             return this.sectionList;
         }
 
-        public IniSection? GetSectionByName(string name)
+        public IniSection GetSectionByName(string name)
         {
             if (!lookup.Contains(name)) return null;
             return lookup[name].First();

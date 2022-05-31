@@ -37,7 +37,7 @@ namespace Panini
 
 
         // Adds a new key, value pair to the section
-        public IniSection? TryAdd(string key, string value)
+        public IniSection TryAdd(string key, string value)
         {
             if (!Params.ContainsKey(key))
             {
@@ -86,10 +86,13 @@ namespace Panini
         }
 
         // Returns the value corresponding to the given key or null
-        public string? TryGet(string key) => Params switch
+        public string TryGet(string key)
         {
-            null => null,
-            _ => Params.ContainsKey(key) ? (string?)Params[key] : null
-        };
+            switch (Params)
+            {
+                case null: return null;
+                default: return Params.ContainsKey(key) ? (string)Params[key] : null;
+            }
+        }
     }
 }

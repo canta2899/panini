@@ -16,8 +16,10 @@ namespace Panini.Parser
 
             file.GetAllSections().ForEach(x => WriteSection(x, ref sb));
 
-            using StreamWriter sw = new StreamWriter(path);
-            sw.Write(sb.ToString());
+            using (StreamWriter sw = new StreamWriter(path))
+            {
+                sw.Write(sb.ToString());
+            }
         }
 
         // Writes the ini file to the given path
@@ -59,11 +61,11 @@ namespace Panini.Parser
             IList<IniSection> parsedContent = new List<IniSection>();
 
             // Opens file for reading
-            using StreamReader fileIni = new StreamReader(path);
-
-            ParseFile(ref parsedContent, fileIni);
-
-            return parsedContent;
+            using (StreamReader fileIni = new StreamReader(path))
+            {
+                ParseFile(ref parsedContent, fileIni);
+                return parsedContent;
+            }
         }
 
         internal static IList<IniSection> Parse(TextReader sr)
@@ -80,7 +82,7 @@ namespace Panini.Parser
         private static void ParseFile(ref IList<IniSection> parsedContent, TextReader fileIni)
         {
             // Params without sections are under ROOT sections
-            string? strLine = null;
+            string strLine = null;
             string currentRoot = "Root";
             string[] keyPair;
             List<string> comments = new List<string>();
