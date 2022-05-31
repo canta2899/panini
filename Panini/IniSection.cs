@@ -9,7 +9,7 @@ namespace Panini
         public string Name { get; internal set; }
 
         // Collection of comments inside the section
-        public List<string> Comments { get; internal set; }
+        public IList<string> Comments { get; internal set; }
 
         // Hashtable of the key-value pair of the section
         public Hashtable Params { get; }
@@ -21,7 +21,7 @@ namespace Panini
             Comments = new List<string>();
         }
 
-        internal IniSection(string name, Hashtable parameters, List<string> comments)
+        internal IniSection(string name, Hashtable parameters, IList<string> comments)
         {
             Name = name;
             Params = parameters;
@@ -81,8 +81,7 @@ namespace Panini
         // Adds a new comment to the section
         public IniSection AddComment(string comment)
         {
-            string tmp = comment.StartsWith("#") ? comment : "# " + comment;
-            Comments.Add(tmp);
+            Comments.Add(comment);
             return this;
         }
 

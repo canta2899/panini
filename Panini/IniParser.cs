@@ -8,13 +8,6 @@ namespace Panini.Parser
 {
     internal static class IniParser
     {
-        // Check if the ini file exists, otherwise throws an exception
-
-        // Builds a section from a name, parameters and comments
-        private static IniSection GetIniSection(string name, Hashtable pars, List<string> comments)
-        {
-            return new IniSection(name, pars, comments);
-        }
 
         // Writes the ini file to the given path
         internal static void Write(IniFile file, string path)
@@ -23,14 +16,18 @@ namespace Panini.Parser
 
             file.GetAllSections().ForEach(x => WriteSection(x, ref sb));
 
-            WriteToFile(ref sb, path);
+            using StreamWriter sw = new StreamWriter(path);
+            sw.Write(sb.ToString());
         }
 
-        // Performs the writing operation using a stream writer
-        private static void WriteToFile(ref StringBuilder sb, string filePath)
+        // Writes the ini file to the given path
+        internal static void Write(IniFile file, TextWriter sw)
         {
-            using StreamWriter sw = new StreamWriter(filePath);
-            sw.Write(sb.ToString(), filePath);
+            StringBuilder sb = new StringBuilder();
+
+            file.GetAllSections().ForEach(x => WriteSection(x, ref sb));
+
+            sw.Write(sb.ToString());
         }
 
         // Builds a string with the corresponding section data
@@ -55,11 +52,11 @@ namespace Panini.Parser
         }
 
         // Parses the Ini file at the given path
-        internal static List<IniSection> Parse(string path)
+        internal static IList<IniSection> Parse(string path)
         {
 
             // For each Ini Section
-            List<IniSection> parsedContent = new List<IniSection>();
+            IList<IniSection> parsedContent = new List<IniSection>();
 
             // Opens file for reading
             using StreamReader fileIni = new StreamReader(path);
@@ -69,9 +66,18 @@ namespace Panini.Parser
             return parsedContent;
         }
 
+        internal static IList<IniSection> Parse(TextReader sr)
+        {
+            IList<IniSection> parsedContent = new List<IniSection>();
+
+            ParseFile(ref parsedContent, sr);
+
+            return parsedContent;
+        }
+
 
         // Performs the line by line parsing
-        private static void ParseFile(ref List<IniSection> parsedContent, StreamReader fileIni)
+        private static void ParseFile(ref IList<IniSection> parsedContent, TextReader fileIni)
         {
             // Params without sections are under ROOT sections
             string? strLine = null;
@@ -97,7 +103,7 @@ namespace Panini.Parser
                     if (currentRoot != null && h.Count > 0)
                     {
                         // Current section done
-                        parsedContent.Add(GetIniSection(currentRoot, h, comments));
+                        parsedContent.Add(new IniSection(currentRoot, h, comments));
                     }
 
                     // new section 
@@ -123,7 +129,7 @@ namespace Panini.Parser
                 }
             }
 
-            if (currentRoot != null) parsedContent.Add(GetIniSection(currentRoot, h, comments));
+            if (currentRoot != null) parsedContent.Add(new IniSection(currentRoot, h, comments));
         }
     } // End class IniParser
 }

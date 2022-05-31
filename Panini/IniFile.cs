@@ -32,17 +32,24 @@ namespace Panini
             );
         }
 
-        private List<IniSection> GetSectionsFromFile(string path)
+        public bool Parse(TextReader sr)
         {
-            return File.Exists(path) ? IniParser.Parse(path)
-                                    : new List<IniSection>();
+            foreach (var x in IniParser.Parse(sr))
+            {
+               sectionList.Add(x);
+            }
+            this.lookup = UpdateLookup();
+            return true;
         }
 
         public bool Parse(string path)
         {
             if (!File.Exists(path)) return false;
 
-            IniParser.Parse(path).ForEach(x => sectionList.Add(x));
+            foreach (var x in IniParser.Parse(path))
+            {
+                sectionList.Add(x);
+            }
             this.lookup = UpdateLookup();
             return true;
         }
@@ -109,6 +116,11 @@ namespace Panini
         public void Save(string path)
         {
             IniParser.Write(this, path: path);
+        }
+
+        public void Save(TextWriter tw)
+        {
+            IniParser.Write(this, tw);
         }
     }
 }

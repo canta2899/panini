@@ -24,4 +24,10 @@
         <ProjectReference Include="..\Panini\Panini.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="test.ini">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
