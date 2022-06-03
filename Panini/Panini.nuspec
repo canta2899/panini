@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>Panini</id>
-        <version>1.3.1</version>
+        <version>1.3.5</version>
         <title>Panini</title>
         <authors>canta2899</authors>
         <description>A simple library for INI file parsing</description>
@@ -17,6 +17,6 @@
     <files>
         <file src="./assets/icon.png" target="assets/" />
         <file src="./assets/README.md" target="docs/" />
-        <file src="./bin/Release/netstandard2.0/Panini.dll" target="lib/netstandard2.0" />
+        <file src="./bin/Debug/netstandard2.0/Panini.dll" target="lib/netstandard2.0" />
     </files>
 </package>

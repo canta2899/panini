@@ -26,6 +26,7 @@ namespace Panini
 
         private ILookup<string, IniSection> UpdateLookup()
         {
+            // Creates lookup
             return sectionList.ToLookup(
                 iniSection => iniSection.Name,
                 iniSection => iniSection
