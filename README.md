@@ -8,7 +8,7 @@
 </h1>
 
 <p align="center">
-  An simple .NET library for <b>INI</b> files parsing.
+  A simple .NET library for <b>INI</b> files parsing.
 </p>
 
 ## Usage
